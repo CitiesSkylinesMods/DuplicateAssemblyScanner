@@ -1,6 +1,6 @@
 # DuplicateAssemblyScanner
 
-Detects duplicate assemblies and determines where they come from. [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2013398705)
+Detects duplicate assemblies and determines where they come from. You can subscribe it on [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2013398705).
 
 ![Harmony](https://user-images.githubusercontent.com/1386719/75841597-0a8ad580-5dc6-11ea-8041-64054ed53dc2.png)
 
