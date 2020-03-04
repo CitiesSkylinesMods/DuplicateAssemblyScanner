@@ -66,7 +66,7 @@ namespace DuplicateAssemblyScanner.Util {
         }
 
         internal static void FindModsWithAssembly(string matchName) {
-            Log.Info($"# Duplicate '{matchName}' assembly exists in mods:");
+            Log.Info($"# '{matchName}' assembly exists in mods:");
 
             PluginManager manager = Singleton<PluginManager>.instance;
 
