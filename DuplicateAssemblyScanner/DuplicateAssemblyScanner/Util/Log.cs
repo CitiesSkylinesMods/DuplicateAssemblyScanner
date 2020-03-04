@@ -13,7 +13,6 @@ namespace DuplicateAssemblyScanner.Util {
         }
 
         private static readonly string LogFilePath = Path.Combine(Application.dataPath, LogFileName);
-        private static readonly Stopwatch sw = Stopwatch.StartNew();
 
         static Log() {
             try {
@@ -48,8 +47,7 @@ namespace DuplicateAssemblyScanner.Util {
         private static void LogToFile(string log, LogLevel level) {
             try {
                 using (StreamWriter w = File.AppendText(LogFilePath)) {
-                    w.Write("{0, -9}", $"[{level.ToString()}] @");
-                    w.Write("{0, 15}", sw.ElapsedTicks + " | ");
+                    w.Write("{0, -9}", $"[{level.ToString()}] ");
                     w.WriteLine(log);
                     if (level == LogLevel.Error) {
                         w.WriteLine(new StackTrace().ToString());
