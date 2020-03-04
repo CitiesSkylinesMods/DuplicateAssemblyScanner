@@ -1,27 +1,73 @@
 namespace DuplicateAssemblyScanner.Util {
     using System.Diagnostics;
     using System.IO;
+    using System.Reflection;
     using UnityEngine;
 
+    /// <summary>
+    /// A simple logging class.
+    ///
+    /// When mod activates, it creates a log file in same location as `output_log.txt`.
+    /// Mac users: It will be in the Cities app contents.
+    /// </summary>
     public class Log {
-        public static readonly string LogFileName = "DuplicateAssemblyScanner.log";
 
-        private enum LogLevel {
-            Debug,
-            Info,
-            Error
-        }
+        /// <summary>
+        /// File name for log file.
+        /// </summary>
+        public static readonly string LogFileName = $"{typeof(Log).Assembly.GetName().Name}.log";
 
+        /// <summary>
+        /// Full path and file name of log file.
+        /// </summary>
         private static readonly string LogFilePath = Path.Combine(Application.dataPath, LogFileName);
 
+        /// <summary>
+        /// Set to <c>true</c> to include timestamp in log entries.
+        /// </summary>
+        private static readonly bool TimeStamp = false;
+
+        /// <summary>
+        /// Stopwatch used if <see cref="TimeStamp"/> is <c>true</c>.
+        /// </summary>
+        private static readonly Stopwatch Timer;
+
+        /// <summary>
+        /// Initializes static members of the <see cref="Log"/> class.
+        /// Resets log file on startup.
+        /// </summary>
         static Log() {
             try {
                 if (File.Exists(LogFilePath)) {
                     File.Delete(LogFilePath);
                 }
-            } catch { }
+
+                if (TimeStamp) {
+                    Timer = Stopwatch.StartNew();
+                }
+
+                AssemblyName details = typeof(Log).Assembly.GetName();
+                Info($"{details.Name} v{details.Version.ToString()}", true);
+            } catch {
+                // ignore
+            }
         }
 
+        /// <summary>
+        /// Log levels. Also output in log file.
+        /// </summary>
+        private enum LogLevel {
+            Debug,
+            Info,
+            Error,
+        }
+
+        /// <summary>
+        /// Logs debug trace, only in <c>DEBUG</c> builds.
+        /// </summary>
+        /// 
+        /// <param name="message">Log entry text.</param>
+        /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         [Conditional("DEBUG")]
         public static void Debug(string message, bool copyToGameLog = false) {
             LogToFile(message, LogLevel.Debug);
@@ -30,6 +76,12 @@ namespace DuplicateAssemblyScanner.Util {
             }
         }
 
+        /// <summary>
+        /// Logs info message.
+        /// </summary>
+        /// 
+        /// <param name="message">Log entry text.</param>
+        /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         public static void Info(string message, bool copyToGameLog = false) {
             LogToFile(message, LogLevel.Info);
             if (copyToGameLog) {
@@ -37,6 +89,12 @@ namespace DuplicateAssemblyScanner.Util {
             }
         }
 
+        /// <summary>
+        /// Logs error message and also outputs a stack trace.
+        /// </summary>
+        /// 
+        /// <param name="message">Log entry text.</param>
+        /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         public static void Error(string message, bool copyToGameLog = true) {
             LogToFile(message, LogLevel.Error);
             if (copyToGameLog) {
@@ -44,17 +102,31 @@ namespace DuplicateAssemblyScanner.Util {
             }
         }
 
-        private static void LogToFile(string log, LogLevel level) {
+        /// <summary>
+        /// Write a message to log file.
+        /// </summary>
+        /// 
+        /// <param name="message">Log entry text.</param>
+        /// <param name="level">Logging level. If set to <see cref="LogLevel.Error"/> a stack trace will be appended.</param>
+        private static void LogToFile(string message, LogLevel level) {
             try {
                 using (StreamWriter w = File.AppendText(LogFilePath)) {
-                    w.Write("{0, -9}", $"[{level.ToString()}] ");
-                    w.WriteLine(log);
+                    w.Write("{0, -8}", $"[{level.ToString()}] ");
+
+                    if (TimeStamp) {
+                        w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
+                    }
+
+                    w.WriteLine(message);
+
                     if (level == LogLevel.Error) {
                         w.WriteLine(new StackTrace().ToString());
                         w.WriteLine();
                     }
                 }
-            } catch { }
+            } catch {
+                // ignore
+            }
         }
     }
 }

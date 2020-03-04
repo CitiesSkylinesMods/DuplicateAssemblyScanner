@@ -8,6 +8,9 @@ namespace DuplicateAssemblyScanner.Util {
     using System.Reflection;
     using static ColossalFramework.Plugins.PluginManager;
 
+    /// <summary>
+    /// Scans for duplicate assemblies and, where found, attempts to work out which mods they are from.
+    /// </summary>
     public class Assemblies {
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace DuplicateAssemblyScanner.Util {
                     } else {
 
                         results.Add(name, new List<string>() {
-                            { ver }
+                            { ver },
                         });
 
                     }

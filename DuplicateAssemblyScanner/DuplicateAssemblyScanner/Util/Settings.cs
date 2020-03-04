@@ -3,34 +3,20 @@ namespace DuplicateAssemblyScanner.Util {
     using ICities;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Generates the settings screen based on cached results from the assembly scanner.
+    /// </summary>
     public class Settings {
 
         /// <summary>
         /// Cache of assembly scan results.
         /// </summary>
-        internal static Dictionary<string, List<string>> cacheDictionary_;
+        private static Dictionary<string, List<string>> cacheDictionary_;
 
         /// <summary>
         /// Cache of whether duplicates were found by the scan.
         /// </summary>
-        internal static bool cacheDuplicates_;
-
-        /// <summary>
-        /// Get (cached) results of assembly scan.
-        /// </summary>
-        /// 
-        /// <param name="duplicatesFound">Will be <c>true</c> if duplicates found.</param>
-        /// <returns>Dictionary of assembly lists keyed by assembly name.</returns>
-        internal static Dictionary<string, List<string>> CacheScanResults(out bool duplicatesFound) {
-            
-            if (cacheDictionary_ == null) {
-                cacheDictionary_ = Assemblies.Scan(out bool issues);
-                cacheDuplicates_ = issues;
-            }
-
-            duplicatesFound = cacheDuplicates_;
-            return cacheDictionary_;
-        }
+        private static bool cacheDuplicates_;
 
         /// <summary>
         /// Generate the options screen listing all the duplicates (if found).
@@ -64,11 +50,34 @@ namespace DuplicateAssemblyScanner.Util {
                             checkbox.isEnabled = false;
                         }
                     }
-
                 }
             }
         }
 
-        internal static void NoOp(bool _) { }
+        /// <summary>
+        /// A dummy click handler for checkboxes. Does nothing.
+        /// </summary>
+        /// 
+        /// <param name="_">Ignored paramter.</param>
+        internal static void NoOp(bool _) {
+            // do nothing
+        }
+
+        /// <summary>
+        /// Get (cached) results of assembly scan.
+        /// </summary>
+        /// 
+        /// <param name="duplicatesFound">Will be <c>true</c> if duplicates found.</param>
+        /// <returns>Dictionary of assembly lists keyed by assembly name.</returns>
+        private static Dictionary<string, List<string>> CacheScanResults(out bool duplicatesFound) {
+            
+            if (cacheDictionary_ == null) {
+                cacheDictionary_ = Assemblies.Scan(out bool issues);
+                cacheDuplicates_ = issues;
+            }
+
+            duplicatesFound = cacheDuplicates_;
+            return cacheDictionary_;
+        }
     }
 }

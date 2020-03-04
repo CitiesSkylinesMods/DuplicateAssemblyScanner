@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Rules for TLM" Description="Code analysis rules for TLM" ToolsVersion="16.0">
+<RuleSet Name="Code analysis rules" Description="Code analysis rules" ToolsVersion="16.0">
   <Rules AnalyzerId="ReflectionIT.Analyzer.Structs" RuleNamespace="ReflectionIT.Analyzer.Structs">
     <Rule Id="RAS0001" Action="Error" />
   </Rules>
