@@ -24,7 +24,9 @@ This mod detects the presence of duplicate assemblies:
 
 ## Build
 
-It will automatically find your `Managed` folder so there's usually no need to manually add reference paths. Thanks to **Kian Zarrin** for making that possible!
+It will automatically find your `Managed` folder so there's usually no need to manually add reference paths.
+
+Thanks to **Kian Zarrin** for making that possible!
 
 ## Contributing
 
