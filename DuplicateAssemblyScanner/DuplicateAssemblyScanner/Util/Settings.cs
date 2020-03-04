@@ -1,4 +1,5 @@
 namespace DuplicateAssemblyScanner.Util {
+    using ColossalFramework.UI;
     using ICities;
     using System.Collections.Generic;
     using System.Reflection;
@@ -20,6 +21,7 @@ namespace DuplicateAssemblyScanner.Util {
             if (problemsFound > 0) {
 
                 UIHelperBase group;
+                UICheckBox checkbox;
                 int matches;
 
                 foreach (KeyValuePair<string, List<string>> entry in results) {
@@ -30,7 +32,8 @@ namespace DuplicateAssemblyScanner.Util {
                         group = helper.AddGroup($"{matches} × '{entry.Key}' assemblies");
 
                         foreach (string ver in entry.Value) {
-                            group.AddCheckbox(ver, true, NoOp);
+                            checkbox = (UICheckBox)group.AddCheckbox(ver, true, NoOp);
+                            checkbox.isEnabled = false;
                         }
 
                     }
