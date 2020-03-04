@@ -5,10 +5,7 @@ namespace DuplicateAssemblyScanner.Util {
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Reflection;
-    using System.Text;
-    using UnityEngine.SceneManagement;
     using static ColossalFramework.Plugins.PluginManager;
 
     public class Assemblies {
@@ -18,15 +15,15 @@ namespace DuplicateAssemblyScanner.Util {
         /// each value is a list of assemblies matching the name.
         /// </summary>
         /// 
+        /// <param name="duplicatesFound">Will be <c>true</c> if duplicates found.</param>
         /// <returns>Dictionary of assembly lists keyed by assembly name.</returns>
-        public static Dictionary<string, List<string>> Scan(out int problemsFound) {
+        public static Dictionary<string, List<string>> Scan(out bool duplicatesFound) {
             Log.Info("Scanning app domain assemblies for duplicates...");
-            problemsFound = 0;
+
+            duplicatesFound = false;
 
             // assembly name -> list of assemblies with that name
             Dictionary<string, List<string>> results = new Dictionary<string, List<string>>();
-
-            bool detailedLogging = SceneManager.GetActiveScene().name != "Game";
 
             Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
 
@@ -41,11 +38,10 @@ namespace DuplicateAssemblyScanner.Util {
                     if (results.TryGetValue(name, out List<string> matches)) {
 
                         if (matches.Count == 1) {
-                            ++problemsFound;
-                            if (detailedLogging) {
-                                FindModsWithAssembly(name);
-                            }
+                            duplicatesFound = true;
+                            LogModsContainingAssembly(name);
                         }
+
                         matches.Add(ver);
 
                     } else {
@@ -61,12 +57,17 @@ namespace DuplicateAssemblyScanner.Util {
                 }
             }
 
-            Log.Info($"{problemsFound} problem(s) found.");
             return results;
         }
 
-        internal static void FindModsWithAssembly(string matchName) {
-            Log.Info($"# Duplicate '{matchName}' assembly exists in mods:");
+        /// <summary>
+        /// Given an assembly name, this attempts to find which mods contain that assembly.
+        /// Results are listed in the log file.
+        /// </summary>
+        /// 
+        /// <param name="targetName">The `GetName().Name` of the assembly to scan for.</param>
+        internal static void LogModsContainingAssembly(string targetName) {
+            Log.Info($"# Duplicate '{targetName}' assembly exists in mods:");
 
             PluginManager manager = Singleton<PluginManager>.instance;
 
@@ -86,7 +87,7 @@ namespace DuplicateAssemblyScanner.Util {
                     contents = mod.GetAssemblies();
                     foreach (Assembly asm in contents) {
                         name = asm.GetName().Name;
-                        if (name == matchName) {
+                        if (name == targetName) {
                             ver = asm.GetName().Version.ToString();
                             path = Path.GetFileName(mod.modPath);
                             name = GetNameOfMod(mod);
@@ -104,7 +105,7 @@ namespace DuplicateAssemblyScanner.Util {
             try {
                 return mod?.userModInstance != null ? ((IUserMod)mod.userModInstance).Name : string.Empty;
             } catch {
-                return "Error getting mod name!";
+                return "** error **";
             }
         }
     }
