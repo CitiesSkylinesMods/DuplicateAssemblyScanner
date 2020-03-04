@@ -20,13 +20,8 @@ namespace DuplicateAssemblyScanner {
 
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            if (SceneManager.GetActiveScene().name == "Game") {
-                return;
-            }
             Log.Info("SettingsUI");
-
-            //todo: actually display stuff in the options screen
-            _ = Assemblies.Scan();
+            Settings.CreateUI(helper);
         }
 
         [UsedImplicitly]

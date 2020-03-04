@@ -76,6 +76,7 @@
     <Compile Include="Util\Assemblies.cs" />
     <Compile Include="Util\Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Util\Settings.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

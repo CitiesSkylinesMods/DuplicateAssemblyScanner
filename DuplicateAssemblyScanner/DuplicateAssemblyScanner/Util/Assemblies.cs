@@ -1,16 +1,26 @@
 namespace DuplicateAssemblyScanner.Util {
     using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Reflection;
     using System.Text;
 
     public class Assemblies {
-        public static Dictionary<string, List<Assembly>> Scan() {
 
-            // assembly nane -> assemblies[]
-            Dictionary<string, List<Assembly>> Duplicates = new Dictionary<string, List<Assembly>>();
+        /// <summary>
+        /// Scans app domain assemblies and compiles a dictionary keyed by assembly name;
+        /// each value is a list of assemblies matching the name.
+        /// </summary>
+        /// 
+        /// <returns>Dictionary of assembly lists keyed by assembly name.</returns>
+        public static Dictionary<string, List<string>> Scan(out int problemsFound) {
 
-            StringBuilder log = new StringBuilder(3000);
+            problemsFound = 0;
+
+            // assembly name -> list of assemblies with that name
+            Dictionary<string, List<string>> results = new Dictionary<string, List<string>>();
+
+            StringBuilder log = new StringBuilder(1500);
 
             log.Append("Scanning assemblies...");
 
@@ -24,19 +34,21 @@ namespace DuplicateAssemblyScanner.Util {
                     string name = details.Name;
                     string ver = details.Version.ToString();
 
-                    if (Duplicates.TryGetValue(name, out List<Assembly> value)) {
+                    if (results.TryGetValue(name, out List<string> matches)) {
 
-                        value.Add(asm);
+                        if (matches.Count == 1) {
+                            ++problemsFound;
+                            log.Append($"\n  Duplicate: '{name}' v{matches.First<string>()}");
+                        }
+
+                        matches.Add(ver);
                         log.Append($"\n  Duplicate: '{name}' v{ver}");
 
                     } else {
-
-                        Duplicates.Add(name, new List<Assembly>() {
-                            { asm }
+                        results.Add(name, new List<string>() {
+                            { ver }
                         });
-
                     }
-
                 } catch (Exception e) {
                     Log.Error(e.ToString());
                 }
@@ -44,7 +56,7 @@ namespace DuplicateAssemblyScanner.Util {
 
             Log.Info(log.ToString());
 
-            return Duplicates;
+            return results;
         }
     }
 }
