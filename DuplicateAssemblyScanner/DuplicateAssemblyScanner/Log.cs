@@ -1,4 +1,4 @@
-namespace DuplicateAssemblyScanner.Util {
+namespace DuplicateAssemblyScanner {
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;

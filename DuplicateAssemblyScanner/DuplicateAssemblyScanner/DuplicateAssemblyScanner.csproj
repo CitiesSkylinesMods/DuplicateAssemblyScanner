@@ -77,11 +77,15 @@
     <Compile Include="..\VersionInfo.cs">
       <Link>Properties\VersionInfo.cs</Link>
     </Compile>
+    <Compile Include="Structs\ModAssembly.cs" />
     <Compile Include="UserMod.cs" />
     <Compile Include="Util\Assemblies.cs" />
-    <Compile Include="Util\Log.cs" />
+    <Compile Include="Util\Md5.cs" />
+    <Compile Include="Log.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util\Settings.cs" />
+    <Compile Include="Util\MemberValue.cs" />
+    <Compile Include="Util\Mods.cs" />
+    <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\ReflectionIT.Analyzer.Structs.0.1.0\analyzers\dotnet\cs\ReflectionIT.Analyzer.Structs.dll" />

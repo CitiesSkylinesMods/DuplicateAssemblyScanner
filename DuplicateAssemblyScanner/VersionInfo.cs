@@ -9,11 +9,11 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Scans for duplicate assemblies in the app domain, which can cause bugs.")]
 
 // Ownership information
-[assembly: AssemblyCompany("Cities Skylines Mods")]
+[assembly: AssemblyCompany("github.com/CitiesSkylinesMods")]
 [assembly: AssemblyCopyright("MIT")]
 [assembly: AssemblyTrademark("")]
 
-// Culture information (usually leave blank)
+// Culture information (usually leave blank = neutral)
 [assembly: AssemblyCulture("")]
 
 // Do not change.
@@ -24,4 +24,5 @@ using System.Runtime.InteropServices;
 //      Minor Version
 //      Build Number
 //      Revision (* = auto)
-[assembly: AssemblyVersion("1.1.0.*")]
+[assembly: AssemblyVersion("1.2.0.*")]
+[assembly: AssemblyFileVersion("1.2.0.0")]

@@ -1,5 +1,4 @@
 namespace DuplicateAssemblyScanner {
-    using DuplicateAssemblyScanner.Util;
     using ICities;
     using JetBrains.Annotations;
 
@@ -7,7 +6,6 @@ namespace DuplicateAssemblyScanner {
     /// The main mod class which the game instantiates when the mod is enabled.
     /// </summary>
     public class UserMod : IUserMod {
-
         /// <summary>
         /// Gets mod name shown in content manager and options screens.
         /// Version defined in Solution Items > VersionInfo.cs file.
