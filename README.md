@@ -14,6 +14,7 @@ Detects duplicate assemblies and determines where they come from. You can subscr
 [Info]  * > 1.0.9.1 812905134bf7bd868428280d601ac573 /1386697922   Garbage Bin Controller
 [Info]    > 1.1.0.0 9b81c76b538fc2217f8df27d4d76685f /1412844620   Realistic Walking Speed
 [Info]      1.1.0.0 c0d7618949db5ae9bb0a6dda04b82769 /870291141    Random Train Trailers 2.1.2
+[Info]  *   1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1420955187   Real Time
 [Info]  *   1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1869561285   Prop Painter
 [Info]  * > 1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1886877404   Custom Effect Loader
 [Info]  * > 1.2.0.2 67ecabf6c52feeb90f33cf501f723f01 /1562650024   Rebalanced Industries
