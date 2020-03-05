@@ -45,7 +45,14 @@ The lists are sorted by assembly version then mod folder:
 
 It will automatically find your `Managed` folder so there's usually no need to manually add reference paths.
 
-Thanks to **Kian Zarrin** for making that possible!
+## Credits
+
+* **dymanoid** for god-tier knowledge of basically everything
+* **krzychu124** for MD5 hash code and lots of help
+* **kian.zarrin** for auto reference paths for managed DLLs
+* **keallu** for his logging class
+* **boformer** for his modding tutorials
+* Anyone who's ever modded C:SL and shared their code for others to learn from!
 
 ## Contributing
 
