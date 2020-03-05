@@ -49,7 +49,7 @@ It will automatically find your `Managed` folder so there's usually no need to m
 
 * **dymanoid** for god-tier knowledge of basically everything
 * **krzychu124** for MD5 hash code and lots of help
-* **kian.zarrin** for auto reference paths for managed DLLs
+* **kian.zarrin** for auto reference paths for managed DLLs, shared assembly info trick
 * **keallu** for his logging class
 * **boformer** for his modding tutorials
 * Anyone who's ever modded C:SL and shared their code for others to learn from!
