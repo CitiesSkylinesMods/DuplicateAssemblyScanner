@@ -82,8 +82,8 @@ namespace DuplicateAssemblyScanner {
 
                 log.AppendFormat(
                     "\n{0} {1} {2} {3} /{4} {5}",
-                    item.ModEnabled ? MARKER_ENABLED : MARKER_BLANK,
                     item.AsmLoaded ? MARKER_LOADED : MARKER_BLANK,
+                    item.ModEnabled ? MARKER_ENABLED : MARKER_BLANK,
                     v.PadRight(12),
                     item.AsmMD5Hash,
                     item.Folder.PadRight(12),

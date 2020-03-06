@@ -23,7 +23,7 @@ namespace DuplicateAssemblyScanner.Util {
             out Dictionary<string, int> duplicates,
             out Dictionary<string, List<ModAssembly>> occurrences) {
 
-            Log.Info("Scanning app domain assemblies for duplicates...\n\n[*] = Mod enabled, [>] = Assembly loaded in RAM");
+            Log.Info("Scanning app domain assemblies for duplicates...\n\n[>] = Assembly loaded in RAM, [*] = Mod enabled");
 
             bool duplicatesFound = false;
 
