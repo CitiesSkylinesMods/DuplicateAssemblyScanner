@@ -4,6 +4,8 @@ Detects duplicate assemblies and determines where they come from. You can subscr
 
 ![DuplicateAssemblyScanner](https://user-images.githubusercontent.com/1386719/76086424-f9032280-5fab-11ea-9318-82865af22b33.png)
 
+`C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\DuplicateAssemblyScanner.log`:
+
 ```
 DuplicateAssemblyScanner v1.2.0.21987
 [SettingsUI]
@@ -30,23 +32,14 @@ Duplicate assemblies cause all sorts of [weird bugs](https://github.com/CitiesSk
 
 This mod detects the presence of duplicate assemblies:
 
-* Basic details are shown in the mod options screen
-* Comprehensive details are output to the `DuplicateAssemblyScanner.log`
-
-## Log format
-
-The lists are sorted by assembly version then mod folder:
-
-* `*` denotes mod was enabled
-* `>` denotes assembly was loaded in app domain
-* Assembly version
-* MD5 hash (to detect if same version assembly contains different code)
-* Folder that contains the mod
-* Name of the mod
+* Summary shown in mod options screen
+* Detailed info in the `DuplicateAssemblyScanner.log`
 
 ## Build
 
 It will automatically find your `Managed` folder so there's usually no need to manually add reference paths.
+
+If you run in to problems, see the TM:PE [Build Guide](https://github.com/CitiesSkylinesMods/TMPE/blob/master/docs/BUILDING_INSTRUCTIONS.md) as we use basically the same setup.
 
 ## Credits
 
