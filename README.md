@@ -7,22 +7,22 @@ Detects duplicate assemblies and determines where they come from. You can subscr
 `C:\Program Files (x86)\Steam\steamapps\common\Cities_Skylines\Cities_Data\DuplicateAssemblyScanner.log`:
 
 ```
-DuplicateAssemblyScanner v1.2.0.21987
+DuplicateAssemblyScanner v1.2.0.24991
 [SettingsUI]
 Scanning app domain assemblies for duplicates...
 
-[*] = Mod enabled, [>] = Assembly loaded in RAM
+[>] = Assembly loaded in RAM, [*] = Mod enabled
 
 0Harmony (5 loaded, 24 mods):
 ---------------------------------------------------------------------------------------------------------
     Asm Version  MD5 Hash                         /Mod Folder   Mod name
 ---------------------------------------------------------------------------------------------------------
-*   1.0.9.1      812905134bf7bd868428280d601ac573 /1372431101   Painter
-* > 1.0.9.1      812905134bf7bd868428280d601ac573 /1386697922   Garbage Bin Controller
-  > 1.1.0.0      9b81c76b538fc2217f8df27d4d76685f /1412844620   Realistic Walking Speed
+  * 1.0.9.1      812905134bf7bd868428280d601ac573 /1372431101   Painter
+> * 1.0.9.1      812905134bf7bd868428280d601ac573 /1386697922   Garbage Bin Controller
+>   1.1.0.0      9b81c76b538fc2217f8df27d4d76685f /1412844620   Realistic Walking Speed
     1.1.0.0      c0d7618949db5ae9bb0a6dda04b82769 /870291141    Random Train Trailers 2.1.2
-*   1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1420955187   Real Time
-*   1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1435741602   Snooper
+  * 1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1420955187   Real Time
+  * 1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1435741602   Snooper
 //etc...
 ```
 
