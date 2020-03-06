@@ -102,7 +102,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="box">The checkbox to disable.</param>
         private static void Disable(UICheckBox box) {
             box.readOnly = true;
-            box.opacity = box.isChecked ? 1f : 0.5f;
+            box.opacity = box.isChecked ? 1f : 0.4f;
         }
 
         /// <summary>
