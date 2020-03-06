@@ -38,56 +38,56 @@
     <SteamPath Condition="! Exists ('$(SteamPath)')">$(ProgramFiles)\Steam</SteamPath>
     <SteamPath Condition="! Exists ('$(SteamPath)')">$(Registry:HKEY_CURRENT_USER\Software\Valve\Steam@SteamPath)</SteamPath>
     <CSPath>$(SteamPath)\steamapps\common\Cities_Skylines</CSPath>
-    <MangedDLLPath>$(CSPath)\Cities_Data\Managed</MangedDLLPath>
-    <MangedDLLPath Condition="! Exists ('$(MangedDLLPath)')">..\dependencies</MangedDLLPath>
+    <ManagedDllPath>$(CSPath)\Cities_Data\Managed</ManagedDllPath>
+    <ManagedDllPath Condition="! Exists ('$(ManagedDllPath)')">..\dependencies</ManagedDllPath>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\Assembly-CSharp.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ColossalManaged, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\ColossalManaged.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="ICities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\ICities.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>$(MangedDLLPath)\mscorlib.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\mscorlib.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>$(MangedDLLPath)\System.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\System.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>$(MangedDLLPath)\System.Configuration.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\System.Configuration.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>$(MangedDLLPath)\System.Core.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\System.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>$(MangedDLLPath)\System.Security.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\System.Security.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-      <HintPath>$(MangedDLLPath)\System.Xml.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\System.Xml.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\UnityEngine.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.Networking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\UnityEngine.Networking.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\UnityEngine.Networking.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>$(MangedDLLPath)\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(ManagedDllPath)\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -120,7 +120,7 @@
         set _ModDir=%_CslDir%\Addons\Mods\$(SolutionName)
 
         echo.
-        echo MangedDLLPath = $(MangedDLLPath)
+        echo ManagedDllPath = $(ManagedDllPath)
         echo.
         echo _CslDir = %_CslDir%
         echo _ModDir = %_ModDir%
