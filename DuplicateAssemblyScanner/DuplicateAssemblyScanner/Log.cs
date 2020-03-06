@@ -115,21 +115,20 @@ namespace DuplicateAssemblyScanner {
         /// <param name="level">Logging level. If set to <see cref="LogLevel.Error"/> a stack trace will be appended.</param>
         private static void LogToFile(string message, LogLevel level) {
             try {
-                using (StreamWriter w = File.AppendText(LogFilePath)) {
-                    if (ShowLevel) {
-                        w.Write("{0, -8}", $"[{level.ToString()}] ");
-                    }
+                using StreamWriter w = File.AppendText(LogFilePath);
+                if (ShowLevel) {
+                    w.Write("{0, -8}", $"[{level.ToString()}] ");
+                }
 
-                    if (ShowTimestamp) {
-                        w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
-                    }
+                if (ShowTimestamp) {
+                    w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
+                }
 
-                    w.WriteLine(message);
+                w.WriteLine(message);
 
-                    if (level == LogLevel.Error) {
-                        w.WriteLine(new StackTrace().ToString());
-                        w.WriteLine();
-                    }
+                if (level == LogLevel.Error) {
+                    w.WriteLine(new StackTrace().ToString());
+                    w.WriteLine();
                 }
             } catch {
                 // ignore
