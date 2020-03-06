@@ -28,7 +28,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>RELEASE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\CodeAnalysis.ruleset</CodeAnalysisRuleSet>
@@ -42,33 +42,51 @@
     <MangedDLLPath Condition="! Exists ('$(MangedDLLPath)')">..\dependencies</MangedDLLPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Assembly-CSharp">
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ColossalManaged">
+    <Reference Include="ColossalManaged, Version=0.3.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\ColossalManaged.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ICities">
+    <Reference Include="ICities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\ICities.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core">
-      <HintPath>$(MangedDLLPath)\System.Core.dll</HintPath>
+    <Reference Include="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>$(MangedDLLPath)\mscorlib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine">
+    <Reference Include="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>$(MangedDLLPath)\System.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>$(MangedDLLPath)\System.Configuration.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Core, Version=3.5.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>$(MangedDLLPath)\System.Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Security, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>$(MangedDLLPath)\System.Security.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System.Xml, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <HintPath>$(MangedDLLPath)\System.Xml.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
+    <Reference Include="UnityEngine.Networking, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\UnityEngine.Networking.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="UnityEngine.UI">
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>$(MangedDLLPath)\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
@@ -97,11 +115,27 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>set "DEPLOYDIR=$(LOCALAPPDATA)\Colossal Order\Cities_Skylines\Addons\Mods\$(TargetName)\"
+      <PostBuildEvent>
+        set _CslDir=%LOCALAPPDATA%\Colossal Order\Cities_Skylines
+        set _ModDir=%_CslDir%\Addons\Mods\$(SolutionName)
 
-del  "%25DEPLOYDIR%25DuplicateAssemblyScanner.dll"
-xcopy /y "$(TargetDir)DuplicateAssemblyScanner.dll" "%25DEPLOYDIR%25"
+        echo.
+        echo MangedDLLPath = $(MangedDLLPath)
+        echo.
+        echo _CslDir = %_CslDir%
+        echo _ModDir = %_ModDir%
+        echo.
 
-set DEPLOYDIR=</PostBuildEvent>
+        mkdir "%_ModDir%"
+
+        rem If in-game, this will trigger a hot-reload of the mod.
+        if exist "%_ModDir%\$(TargetFileName)" (
+          del "%_ModDir%\$(TargetFileName)"
+        )
+        xcopy "$(TargetDir)$(TargetFileName)" "%_ModDir%" /y /e
+
+        set _CslDir=
+        set _ModDir=
+      </PostBuildEvent>
   </PropertyGroup>
 </Project>

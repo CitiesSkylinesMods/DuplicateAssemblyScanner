@@ -17,7 +17,7 @@ namespace DuplicateAssemblyScanner {
         /// Gets mod description shown in content manager.
         /// </summary>
         [UsedImplicitly]
-        public string Description => "Scans for duplicate assemblies in the app domain, which can cause bugs.";
+        public string Description => "Scans for duplicate assemblies in the app domain.";
 
         /// <summary>
         /// Called when mod is enabled.
