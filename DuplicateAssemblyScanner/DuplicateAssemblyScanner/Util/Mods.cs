@@ -13,10 +13,6 @@ namespace DuplicateAssemblyScanner.Util {
     /// Utility functions for mods.
     /// </summary>
     public class Mods {
-        // Markers used in log file entries
-        private const string MARKER_BLANK = " ";
-        private const string MARKER_ENABLED = "*";
-        private const string MARKER_LOADED = ">";
 
         /// <summary>
         /// Given an assembly name, this scans to find out which mods contain the assembly.
@@ -26,8 +22,6 @@ namespace DuplicateAssemblyScanner.Util {
         /// 
         /// <returns>Returns a list of the mods containing the assembly.</returns>
         internal static List<ModAssembly> FindAnyContainingAssembly(string assemblyName) {
-
-            Log.Info($"{assemblyName} found in:");
 
             List<ModAssembly> results = new List<ModAssembly>();
 
@@ -47,18 +41,6 @@ namespace DuplicateAssemblyScanner.Util {
             }
 
             results = results.OrderBy(x => x.AsmDetails.Version).ThenBy(y => y.Folder).ToList();
-
-            foreach (ModAssembly item in results) {
-
-                string v = item.AsmDetails.Version.ToString();
-                string n = item.ModName;
-                string l = item.AsmLoaded ? MARKER_LOADED : MARKER_BLANK;
-                string e = item.ModEnabled ? MARKER_ENABLED : MARKER_BLANK;
-                string p = item.Folder.PadRight(12);
-                string h = item.AsmMD5Hash.PadRight(32);
-
-                Log.Info($"{e} {l} {v} {h} /{p} {n}");
-            }
 
             return results;
         }

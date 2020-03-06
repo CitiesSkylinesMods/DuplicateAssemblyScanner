@@ -24,7 +24,7 @@ namespace DuplicateAssemblyScanner {
         /// </summary>
         [UsedImplicitly]
         public void OnEnabled() {
-            Log.Info("Enabled");
+            Log.Debug("Enabled");
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="helper">Helper for creating UI.</param>
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            Log.Info("SettingsUI");
+            Log.Debug("SettingsUI");
             Settings.CreateUI(helper);
         }
 
@@ -43,7 +43,7 @@ namespace DuplicateAssemblyScanner {
         /// </summary>
         [UsedImplicitly]
         public void OnDisabled() {
-            Log.Info("Disabled");
+            Log.Debug("Disabled");
         }
     }
 }

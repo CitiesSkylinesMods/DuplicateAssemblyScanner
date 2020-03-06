@@ -4,14 +4,17 @@ namespace DuplicateAssemblyScanner {
     using DuplicateAssemblyScanner.Util;
     using ICities;
     using System.Collections.Generic;
+    using System.Text;
 
     /// <summary>
     /// Generates the settings screen based on cached results from the assembly scanner.
     /// </summary>
     public class Settings {
-        // Markers used in checkbox labels
+        // Markers used in checkbox labels and log entries
+        private const string MARKER_DOUBLEBLANK = "  ";
         private const string MARKER_BLANK = " ";
         private const string MARKER_ENABLED = "*";
+        private const string MARKER_LOADED = ">";
 
         // Cache of scan results
         private static Dictionary<string, int> duplicates_;
@@ -74,15 +77,33 @@ namespace DuplicateAssemblyScanner {
             int loaded,
             List<ModAssembly> list) {
 
-            UIHelperBase group = helper.AddGroup($"{list.Count} × {assemblyName} ({loaded} loaded):");
+            StringBuilder log = new StringBuilder(3000);
+
+            log.AppendFormat("\n{0} ({1} loaded, {2} mods):\n", assemblyName, loaded, list.Count);
+            log.Insert(log.Length, "-", 105);
+            log.Append("\n    Asm Version  MD5 Hash                         /Mod Folder   Mod name\n");
+            log.Insert(log.Length, "-", 105);
+
+            UIHelperBase group = helper.AddGroup($"{assemblyName} ({loaded} loaded, {list.Count} mods):");
 
             foreach (ModAssembly item in list) {
                 string v = item.AsmDetails.Version.ToString();
                 string n = item.ModName;
-                string e = item.ModEnabled ? MARKER_ENABLED : MARKER_BLANK;
+                string e = item.ModEnabled ? MARKER_ENABLED : MARKER_DOUBLEBLANK;
+
+                log.AppendFormat(
+                    "\n{0} {1} {2} {3} /{4} {5}",
+                    item.ModEnabled ? MARKER_ENABLED : MARKER_BLANK,
+                    item.AsmLoaded ? MARKER_LOADED : MARKER_BLANK,
+                    v.PadRight(12),
+                    item.AsmMD5Hash,
+                    item.Folder.PadRight(12),
+                    n);
 
                 Disable((UICheckBox)group.AddCheckbox($"{v} {e} {n}", item.AsmLoaded, NoOp));
             }
+
+            Log.Info(log.ToString());
         }
 
         /// <summary>
