@@ -34,7 +34,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="helper">Helper for creating UI.</param>
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            Log.Debug("SettingsUI");
+            Log.Info("[SettingsUI]");
             Settings.CreateUI(helper);
         }
 
