@@ -2,24 +2,26 @@
 
 Detects duplicate assemblies and determines where they come from. You can subscribe it on [Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=2013398705).
 
-![Harmony](https://user-images.githubusercontent.com/1386719/76034521-0df19e80-5f37-11ea-8a34-3b65012e83f8.png)
+![DuplicateAssemblyScanner](https://user-images.githubusercontent.com/1386719/76086424-f9032280-5fab-11ea-9318-82865af22b33.png)
 
 ```
-[Info]  DuplicateAssemblyScanner v1.2.0.40729
-[Info]  Enabled
-[Info]  SettingsUI
-[Info]  Scanning app domain assemblies for duplicates... [*] = Mod enabled, [>] = Assembly loaded in RAM
-[Info]  0Harmony found in:
-[Info]  *   1.0.9.1 812905134bf7bd868428280d601ac573 /1372431101   Painter
-[Info]  * > 1.0.9.1 812905134bf7bd868428280d601ac573 /1386697922   Garbage Bin Controller
-[Info]    > 1.1.0.0 9b81c76b538fc2217f8df27d4d76685f /1412844620   Realistic Walking Speed
-[Info]      1.1.0.0 c0d7618949db5ae9bb0a6dda04b82769 /870291141    Random Train Trailers 2.1.2
-[Info]  *   1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1420955187   Real Time
-[Info]  *   1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1869561285   Prop Painter
-[Info]  * > 1.2.0.1 09cb0a9d9724f2965a4b73bb590e9a57 /1886877404   Custom Effect Loader
-[Info]  * > 1.2.0.2 67ecabf6c52feeb90f33cf501f723f01 /1562650024   Rebalanced Industries
-[Info]  * > 2.0.0.0 616b7f80b28b7e80050998e4473d4c31 /1758376843   Network Skins 2 Beta
-[Info]  Disabled
+DuplicateAssemblyScanner v1.2.0.21987
+[SettingsUI]
+Scanning app domain assemblies for duplicates...
+
+[*] = Mod enabled, [>] = Assembly loaded in RAM
+
+0Harmony (5 loaded, 24 mods):
+---------------------------------------------------------------------------------------------------------
+    Asm Version  MD5 Hash                         /Mod Folder   Mod name
+---------------------------------------------------------------------------------------------------------
+*   1.0.9.1      812905134bf7bd868428280d601ac573 /1372431101   Painter
+* > 1.0.9.1      812905134bf7bd868428280d601ac573 /1386697922   Garbage Bin Controller
+  > 1.1.0.0      9b81c76b538fc2217f8df27d4d76685f /1412844620   Realistic Walking Speed
+    1.1.0.0      c0d7618949db5ae9bb0a6dda04b82769 /870291141    Random Train Trailers 2.1.2
+*   1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1420955187   Real Time
+*   1.2.0.1      09cb0a9d9724f2965a4b73bb590e9a57 /1435741602   Snooper
+//etc...
 ```
 
 ## Purpose
