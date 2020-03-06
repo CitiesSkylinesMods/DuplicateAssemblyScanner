@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Scans for duplicate assemblies in the app domain, which can cause bugs.")]
 
 // Ownership information
-[assembly: AssemblyCompany("github.com/CitiesSkylinesMods")]
+[assembly: AssemblyCompany("CitiesSkylinesMods")]
 [assembly: AssemblyCopyright("MIT")]
 [assembly: AssemblyTrademark("")]
 

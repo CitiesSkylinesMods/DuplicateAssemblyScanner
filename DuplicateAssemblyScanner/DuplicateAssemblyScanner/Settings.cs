@@ -30,20 +30,18 @@ namespace DuplicateAssemblyScanner {
 
             UIHelperBase group;
 
-            if (CacheScan(
-                out Dictionary<string, int> duplicates,
-                out Dictionary<string, List<ModAssembly>> occurrences)) {
+            if (CacheScan(out var duplicates, out var occurrences)) {
 
                 group = helper.AddGroup("Duplicate assemblies were detected.");
 
-                Disable((UICheckBox)group.AddCheckbox("= Assembly is loaded in to app domain", true, NoOp));
-                Disable((UICheckBox)group.AddCheckbox("= Assembly not loaded", false, NoOp));
+                Disable((UICheckBox)group.AddCheckbox("= Assembly is loaded in to app domain", true, (bool _) => { }));
+                Disable((UICheckBox)group.AddCheckbox("= Assembly not loaded", false, (bool _) => { }));
 
-                foreach (KeyValuePair<string, int> duplicate in duplicates) {
+                foreach (var duplicate in duplicates) {
 
                     if (duplicate.Value > 1) {
 
-                        if (occurrences.TryGetValue(duplicate.Key, out List<ModAssembly> mods)) {
+                        if (occurrences.TryGetValue(duplicate.Key, out var mods)) {
 
                             RenderDetails(helper, duplicate.Key, duplicate.Value, mods);
                         }
@@ -52,15 +50,6 @@ namespace DuplicateAssemblyScanner {
             } else {
                 helper.AddGroup("No duplicates.");
             }
-        }
-
-        /// <summary>
-        /// A dummy click handler for checkboxes. Does nothing.
-        /// </summary>
-        /// 
-        /// <param name="_">Ignored paramter.</param>
-        internal static void NoOp(bool _) {
-            // do nothing
         }
 
         /// <summary>
@@ -100,7 +89,7 @@ namespace DuplicateAssemblyScanner {
                     item.Folder.PadRight(12),
                     n);
 
-                Disable((UICheckBox)group.AddCheckbox($"{v} {e} {n}", item.AsmLoaded, NoOp));
+                Disable((UICheckBox)group.AddCheckbox($"{v} {e} {n}", item.AsmLoaded, (bool _) => { }));
             }
 
             Log.Info(log.ToString());
@@ -129,10 +118,7 @@ namespace DuplicateAssemblyScanner {
             out Dictionary<string, List<ModAssembly>> occurrences) {
             
             if (duplicates_ == null) {
-                duplicatesFound_ = Assemblies.Scan(
-                    out Dictionary<string, int> dup,
-                    out Dictionary<string, List<ModAssembly>> occ);
-
+                duplicatesFound_ = Assemblies.Scan(out var dup, out var occ);
                 duplicates_ = dup;
                 occurrences_ = occ;
             }

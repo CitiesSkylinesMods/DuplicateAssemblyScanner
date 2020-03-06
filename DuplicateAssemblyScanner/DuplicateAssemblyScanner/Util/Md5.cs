@@ -14,12 +14,11 @@ namespace DuplicateAssemblyScanner.Util {
         /// 
         /// <param name="fullPath">Full path of file, including file name.</param>
         /// <param name="md5Hash">If successful, the calculated MD5 hasn for <paramref name="fullPath"/>.</param>
-        /// <param name="removeHyphens">If <c>true</c>, hyphens will be removed form the returned string.</param>
         /// 
         /// <returns>Returns <c>true</c> if successful, otherwise <c>false</c>.</returns>
-        internal static bool TryGetHash(string fullPath, out string md5Hash, bool removeHyphens = false) {
+        internal static bool TryGetHash(string fullPath, out string md5Hash) {
             try {
-                md5Hash = CaclulateHash(fullPath, removeHyphens);
+                md5Hash = CaclulateHash(fullPath);
                 return true;
             } catch {
                 md5Hash = string.Empty;
@@ -34,23 +33,18 @@ namespace DuplicateAssemblyScanner.Util {
         /// </summary>
         /// 
         /// <param name="fullPath">Full path of file, including file name.</param>
-        /// <param name="removeHyphens">If <c>true</c>, hyphens will be removed form the returned string.</param>
         ///
         /// <exception cref="UnauthorizedAccessException"><paramref name="fullPath"/> access denied or not a file.</exception>
         /// <exception cref="DirectoryNotFoundException"><paramref name="fullPath"/> not found.</exception>
         /// <exception cref="IOException"><paramref name="fullPath"/> was already open and cannot be read.</exception>
         /// 
         /// <returns>Returns the MD5 hash of the file.</returns>
-        private static string CaclulateHash(
-            string fullPath,
-            bool removeHyphens = false) {
+        private static string CaclulateHash(string fullPath) {
 
             using MD5 md5 = MD5.Create();
             using FileStream stream = File.OpenRead(fullPath);
             byte[] hash = md5.ComputeHash(stream);
-            return removeHyphens
-                ? BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant()
-                : BitConverter.ToString(hash).ToLowerInvariant();
+            return BitConverter.ToString(hash).Replace("-", string.Empty).ToLowerInvariant();
         }
     }
 }

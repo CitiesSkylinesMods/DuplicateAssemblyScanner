@@ -25,10 +25,10 @@ namespace DuplicateAssemblyScanner.Util {
         /// <param name="member">The <see cref="MemberInfo"/> for the member to inspect.</param>
         /// 
         /// <returns>Returns the value of the <paramref name="member"/>, if found, otherwise the <c>default</c> value for <typeparamref name="T"/>.</returns>
-        public static T GetValue<T>(object instance, MemberInfo member) {
+        private static T GetValue<T>(object instance, MemberInfo member) {
             return member.MemberType switch
             {
-                MemberTypes.Field => (T)(member as FieldInfo)?.GetValue(instance),
+                MemberTypes.Field => (T)(member as FieldInfo).GetValue(instance),
                 MemberTypes.Method => (T)(member as MethodInfo)?.Invoke(instance, null),
                 MemberTypes.Property => (T)(member as PropertyInfo)?.GetValue(instance, null),
                 _ => default,
@@ -61,7 +61,7 @@ namespace DuplicateAssemblyScanner.Util {
         ///
         /// (instance as IDisposable)?.Dispose();
         /// </example>
-        public static bool TryGetMemberValue<T>(
+        private static bool TryGetMemberValue<T>(
             Type type,
             object instance,
             string name,

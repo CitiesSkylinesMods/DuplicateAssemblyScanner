@@ -65,7 +65,7 @@ namespace DuplicateAssemblyScanner.Util {
                     string hash = string.Empty;
 
                     if (TryGetAssemblyPath(mod, assemblyName, out string fullPath)) {
-                        if (Md5.TryGetHash(fullPath, out string md5Hash, true)) {
+                        if (Md5.TryGetHash(fullPath, out string md5Hash)) {
                             hash = md5Hash;
                         }
                     }
@@ -120,7 +120,7 @@ namespace DuplicateAssemblyScanner.Util {
                     AsmLoaded = false,
                 };
 
-                if (Md5.TryGetHash(fullPath, out string md5Hash, true)) {
+                if (Md5.TryGetHash(fullPath, out string md5Hash)) {
                     details.AsmMD5Hash = md5Hash;
                 }
 
@@ -145,15 +145,7 @@ namespace DuplicateAssemblyScanner.Util {
         /// <returns>Returns <c>true</c> if successful, otherwise <c>false</c>.</returns>
         private static bool TryGetAssemblyPath(PluginInfo mod, string assemblyName, out string fullPath) {
             fullPath = Path.Combine(mod.modPath, $"{assemblyName}.dll");
-            try {
-                if (File.Exists(fullPath)) {
-                    return true;
-                } else {
-                    return false;
-                }
-            } catch {
-                return false;
-            }
+            return File.Exists(fullPath);
         }
 
         /// <summary>
