@@ -1,5 +1,4 @@
 namespace DuplicateAssemblyScanner {
-    using DuplicateAssemblyScanner.Util;
     using ICities;
     using JetBrains.Annotations;
 
@@ -7,7 +6,6 @@ namespace DuplicateAssemblyScanner {
     /// The main mod class which the game instantiates when the mod is enabled.
     /// </summary>
     public class UserMod : IUserMod {
-
         /// <summary>
         /// Gets mod name shown in content manager and options screens.
         /// Version defined in Solution Items > VersionInfo.cs file.
@@ -19,14 +17,14 @@ namespace DuplicateAssemblyScanner {
         /// Gets mod description shown in content manager.
         /// </summary>
         [UsedImplicitly]
-        public string Description => "Scans for duplicate assemblies in the app domain, which can cause bugs.";
+        public string Description => "Scans for duplicate assemblies in the app domain.";
 
         /// <summary>
         /// Called when mod is enabled.
         /// </summary>
         [UsedImplicitly]
         public void OnEnabled() {
-            Log.Info("Enabled");
+            Log.Debug("Enabled");
         }
 
         /// <summary>
@@ -36,7 +34,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="helper">Helper for creating UI.</param>
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            Log.Info("SettingsUI");
+            Log.Info("[SettingsUI]");
             Settings.CreateUI(helper);
         }
 
@@ -45,7 +43,7 @@ namespace DuplicateAssemblyScanner {
         /// </summary>
         [UsedImplicitly]
         public void OnDisabled() {
-            Log.Info("Disabled");
+            Log.Debug("Disabled");
         }
     }
 }

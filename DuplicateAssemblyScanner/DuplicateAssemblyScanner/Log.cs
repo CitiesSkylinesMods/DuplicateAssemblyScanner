@@ -1,4 +1,4 @@
-namespace DuplicateAssemblyScanner.Util {
+namespace DuplicateAssemblyScanner {
     using System.Diagnostics;
     using System.IO;
     using System.Reflection;
@@ -13,9 +13,19 @@ namespace DuplicateAssemblyScanner.Util {
     public class Log {
 
         /// <summary>
+        /// Set to <c>true</c> to include log level in log entries.
+        /// </summary>
+        private static readonly bool ShowLevel = false;
+
+        /// <summary>
+        /// Set to <c>true</c> to include timestamp in log entries.
+        /// </summary>
+        private static readonly bool ShowTimestamp = false;
+
+        /// <summary>
         /// File name for log file.
         /// </summary>
-        public static readonly string LogFileName = $"{typeof(Log).Assembly.GetName().Name}.log";
+        private static readonly string LogFileName = $"{typeof(Log).Assembly.GetName().Name}.log";
 
         /// <summary>
         /// Full path and file name of log file.
@@ -23,12 +33,7 @@ namespace DuplicateAssemblyScanner.Util {
         private static readonly string LogFilePath = Path.Combine(Application.dataPath, LogFileName);
 
         /// <summary>
-        /// Set to <c>true</c> to include timestamp in log entries.
-        /// </summary>
-        private static readonly bool TimeStamp = false;
-
-        /// <summary>
-        /// Stopwatch used if <see cref="TimeStamp"/> is <c>true</c>.
+        /// Stopwatch used if <see cref="ShowTimestamp"/> is <c>true</c>.
         /// </summary>
         private static readonly Stopwatch Timer;
 
@@ -42,7 +47,7 @@ namespace DuplicateAssemblyScanner.Util {
                     File.Delete(LogFilePath);
                 }
 
-                if (TimeStamp) {
+                if (ShowTimestamp) {
                     Timer = Stopwatch.StartNew();
                 }
 
@@ -110,19 +115,20 @@ namespace DuplicateAssemblyScanner.Util {
         /// <param name="level">Logging level. If set to <see cref="LogLevel.Error"/> a stack trace will be appended.</param>
         private static void LogToFile(string message, LogLevel level) {
             try {
-                using (StreamWriter w = File.AppendText(LogFilePath)) {
+                using StreamWriter w = File.AppendText(LogFilePath);
+                if (ShowLevel) {
                     w.Write("{0, -8}", $"[{level.ToString()}] ");
+                }
 
-                    if (TimeStamp) {
-                        w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
-                    }
+                if (ShowTimestamp) {
+                    w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
+                }
 
-                    w.WriteLine(message);
+                w.WriteLine(message);
 
-                    if (level == LogLevel.Error) {
-                        w.WriteLine(new StackTrace().ToString());
-                        w.WriteLine();
-                    }
+                if (level == LogLevel.Error) {
+                    w.WriteLine(new StackTrace().ToString());
+                    w.WriteLine();
                 }
             } catch {
                 // ignore
