@@ -37,7 +37,7 @@ This mod detects the presence of duplicate assemblies:
 
 ## Build
 
-It will automatically find your `Managed` folder so there's usually no need to manually add reference paths.
+It should automatically find your `Managed` folder so there's usually no need to manually add reference paths.
 
 If you run in to problems, see the TM:PE [Build Guide](https://github.com/CitiesSkylinesMods/TMPE/blob/master/docs/BUILDING_INSTRUCTIONS.md) as we use basically the same setup.
 
