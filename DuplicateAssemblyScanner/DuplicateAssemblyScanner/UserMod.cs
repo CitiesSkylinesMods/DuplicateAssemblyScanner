@@ -1,6 +1,9 @@
 namespace DuplicateAssemblyScanner {
+    using ColossalFramework;
+    using ColossalFramework.Plugins;
     using ICities;
     using JetBrains.Annotations;
+    using UnityEngine.SceneManagement;
 
     /// <summary>
     /// The main mod class which the game instantiates when the mod is enabled.
@@ -25,6 +28,9 @@ namespace DuplicateAssemblyScanner {
         [UsedImplicitly]
         public void OnEnabled() {
             Log.Debug("Enabled");
+            PluginManager plugins = Singleton<PluginManager>.instance;
+            plugins.eventPluginsChanged += OnModsChanged;
+            plugins.eventPluginsStateChanged += OnModsChanged;
         }
 
         /// <summary>
@@ -34,8 +40,18 @@ namespace DuplicateAssemblyScanner {
         /// <param name="helper">Helper for creating UI.</param>
         [UsedImplicitly]
         public void OnSettingsUI(UIHelperBase helper) {
-            Log.Info("[SettingsUI]");
+            Log.Info($"[SettingsUI] {SceneManager.GetActiveScene().name}");
             Settings.CreateUI(helper);
+        }
+
+        /// <summary>
+        /// Logs out when mods change, as they cause settings to be recreated.
+        /// </summary>
+        public void OnModsChanged() {
+            Log.Info($"[OnModsChanged] {SceneManager.GetActiveScene().name}");
+
+            // force rescan:
+            Settings._duplicates = null;
         }
 
         /// <summary>
@@ -44,6 +60,9 @@ namespace DuplicateAssemblyScanner {
         [UsedImplicitly]
         public void OnDisabled() {
             Log.Debug("Disabled");
+            PluginManager plugins = Singleton<PluginManager>.instance;
+            plugins.eventPluginsChanged -= OnModsChanged;
+            plugins.eventPluginsStateChanged -= OnModsChanged;
         }
     }
 }
