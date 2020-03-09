@@ -10,15 +10,31 @@ namespace DuplicateAssemblyScanner {
     /// Generates the settings screen based on cached results from the assembly scanner.
     /// </summary>
     public class Settings {
+        /// <summary>
+        /// Cache the number of duplicates per assembly name.
+        ///
+        /// Setting this to <c>null</c> causes a fresh scan next time
+        /// <c>Settings.CreateUI()</c> is called.
+        /// </summary>
+        internal static Dictionary<string, int> _duplicates;
+
         // Markers used in checkbox labels and log entries
         private const string MARKER_DOUBLEBLANK = "  ";
         private const string MARKER_BLANK = " ";
         private const string MARKER_ENABLED = "*";
         private const string MARKER_LOADED = ">";
 
-        // Cache of scan results
-        private static Dictionary<string, int> _duplicates;
+        /// <summary>
+        /// Cache which mods contain an assembly of given name.
+        ///
+        /// By default it will only list loaded assemblies, except in the case of
+        /// <c>0Harmony.dll</c> where it will also scan for unloaded assemblies.
+        /// </summary>
         private static Dictionary<string, List<ModAssembly>> _occurrences;
+
+        /// <summary>
+        /// Cache whether duplicates were found on last scan.
+        /// </summary>
         private static bool _duplicatesFound;
 
         /// <summary>

@@ -49,6 +49,9 @@ namespace DuplicateAssemblyScanner {
         /// </summary>
         public void OnModsChanged() {
             Log.Info($"[OnModsChanged] {SceneManager.GetActiveScene().name}");
+
+            // force rescan:
+            Settings._duplicates = null;
         }
 
         /// <summary>
