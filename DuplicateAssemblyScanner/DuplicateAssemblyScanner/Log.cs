@@ -3,6 +3,7 @@ namespace DuplicateAssemblyScanner {
     using System.IO;
     using System.Reflection;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
     /// <summary>
     /// A simple logging class.
@@ -13,29 +14,29 @@ namespace DuplicateAssemblyScanner {
     public class Log {
 
         /// <summary>
-        /// Set to <c>true</c> to include log level in log entries.
-        /// </summary>
-        private static readonly bool ShowLevel = false;
-
-        /// <summary>
-        /// Set to <c>true</c> to include timestamp in log entries.
-        /// </summary>
-        private static readonly bool ShowTimestamp = false;
-
-        /// <summary>
         /// File name for log file.
         /// </summary>
-        private static readonly string LogFileName = $"{typeof(Log).Assembly.GetName().Name}.log";
+        public static readonly string LogFileName = $"{typeof(Log).Assembly.GetName().Name}.log";
 
         /// <summary>
         /// Full path and file name of log file.
         /// </summary>
-        private static readonly string LogFilePath = Path.Combine(Application.dataPath, LogFileName);
+        public static readonly string LogFilePath = Path.Combine(Application.dataPath, LogFileName);
 
         /// <summary>
         /// Stopwatch used if <see cref="ShowTimestamp"/> is <c>true</c>.
         /// </summary>
-        private static readonly Stopwatch Timer;
+        private static readonly Stopwatch Timestamp = Stopwatch.StartNew();
+
+        /// <summary>
+        /// Records last logged entry so we can despam.
+        /// </summary>
+        private static string lastMessage = string.Empty;
+
+        /// <summary>
+        /// Number of repetitions of last entry.
+        /// </summary>
+        private static ulong lastMessageCount = 0;
 
         /// <summary>
         /// Initializes static members of the <see cref="Log"/> class.
@@ -44,15 +45,19 @@ namespace DuplicateAssemblyScanner {
         static Log() {
             try {
                 if (File.Exists(LogFilePath)) {
-                    File.Delete(LogFilePath);
+                    string scene = SceneManager.GetActiveScene().name;
+
+                    if (scene == "Startup") {
+                        File.Delete(LogFilePath);
+                    } else if (scene == "Game") {
+                        Info("\n--- HOT RELOAD DETECTED ---\n");
+                    } else {
+                        Info("\n--- POSSIBLE HOT RELOAD DETECTED ---\n");
+                    }
                 }
 
-                if (ShowTimestamp) {
-                    Timer = Stopwatch.StartNew();
-                }
-
-                AssemblyName details = typeof(Log).Assembly.GetName();
-                Info($"{details.Name} v{details.Version.ToString()}", true);
+                AssemblyName mod = typeof(Log).Assembly.GetName();
+                Info($"\n{mod.Name} v{mod.Version.ToString()}\n", true);
             } catch {
                 // ignore
             }
@@ -68,6 +73,16 @@ namespace DuplicateAssemblyScanner {
         }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the log level should be logged.
+        /// </summary>
+        public static bool ShowLogLevel { get; set; } = false;
+
+        /// <summary>
+        /// Gets or sets a value indicating whether timestamps should be logged.
+        /// </summary>
+        public static bool ShowTimestamp { get; set; } = false;
+
+        /// <summary>
         /// Logs debug trace, only in <c>DEBUG</c> builds.
         /// </summary>
         /// 
@@ -75,10 +90,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         [Conditional("DEBUG")]
         public static void Debug(string message, bool copyToGameLog = false) {
-            LogToFile(message, LogLevel.Debug);
-            if (copyToGameLog) {
-                UnityEngine.Debug.Log(message);
-            }
+            LogToFile(message, LogLevel.Debug, copyToGameLog);
         }
 
         /// <summary>
@@ -88,10 +100,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="message">Log entry text.</param>
         /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         public static void Info(string message, bool copyToGameLog = false) {
-            LogToFile(message, LogLevel.Info);
-            if (copyToGameLog) {
-                UnityEngine.Debug.Log(message);
-            }
+            LogToFile(message, LogLevel.Info, copyToGameLog);
         }
 
         /// <summary>
@@ -101,10 +110,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="message">Log entry text.</param>
         /// <param name="copyToGameLog">If <c>true</c> will copy to the main game log file.</param>
         public static void Error(string message, bool copyToGameLog = true) {
-            LogToFile(message, LogLevel.Error);
-            if (copyToGameLog) {
-                UnityEngine.Debug.LogError(message);
-            }
+            LogToFile(message, LogLevel.Error, copyToGameLog);
         }
 
         /// <summary>
@@ -113,22 +119,42 @@ namespace DuplicateAssemblyScanner {
         /// 
         /// <param name="message">Log entry text.</param>
         /// <param name="level">Logging level. If set to <see cref="LogLevel.Error"/> a stack trace will be appended.</param>
-        private static void LogToFile(string message, LogLevel level) {
+        private static void LogToFile(string message, LogLevel level, bool copyToGameLog = false) {
             try {
+                if (message.Equals(lastMessage)) {
+                    ++lastMessageCount;
+                    return;
+                }
+
                 using StreamWriter w = File.AppendText(LogFilePath);
-                if (ShowLevel) {
+
+                if (lastMessageCount > 0) {
+                    w.WriteLine($"[{lastMessageCount} repeat(s)]");
+                }
+                lastMessage = message;
+                lastMessageCount = 0;
+
+                if (ShowLogLevel) {
                     w.Write("{0, -8}", $"[{level.ToString()}] ");
                 }
 
                 if (ShowTimestamp) {
-                    w.Write("{0, 15}", Timer.ElapsedTicks + " | ");
+                    w.Write("{0, 15}", Timestamp.ElapsedTicks + " | ");
                 }
 
                 w.WriteLine(message);
 
                 if (level == LogLevel.Error) {
-                    w.WriteLine(new StackTrace().ToString());
+                    w.WriteLine(new StackTrace());
                     w.WriteLine();
+                }
+
+                if (copyToGameLog) {
+                    if (level == LogLevel.Error) {
+                        UnityEngine.Debug.LogError(message);
+                    } else {
+                        UnityEngine.Debug.Log(message);
+                    }
                 }
             } catch {
                 // ignore
