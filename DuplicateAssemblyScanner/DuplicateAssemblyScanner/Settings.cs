@@ -17,9 +17,9 @@ namespace DuplicateAssemblyScanner {
         private const string MARKER_LOADED = ">";
 
         // Cache of scan results
-        private static Dictionary<string, int> duplicates_;
-        private static Dictionary<string, List<ModAssembly>> occurrences_;
-        private static bool duplicatesFound_;
+        private static Dictionary<string, int> _duplicates;
+        private static Dictionary<string, List<ModAssembly>> _occurrences;
+        private static bool _duplicatesFound;
 
         /// <summary>
         /// Generate the options screen listing all the duplicates (if found).
@@ -32,10 +32,10 @@ namespace DuplicateAssemblyScanner {
 
             if (CacheScan(out var duplicates, out var occurrences)) {
 
-                group = helper.AddGroup("Duplicate assemblies were detected.");
+                group = AddGroup("Duplicate assemblies were detected.", helper);
 
-                Disable((UICheckBox)group.AddCheckbox("= Assembly is loaded in to app domain", true, (bool _) => { }));
-                Disable((UICheckBox)group.AddCheckbox("= Assembly not loaded", false, (bool _) => { }));
+                AddCheckbox("= Assembly is loaded in to app domain", true, group);
+                AddCheckbox("= Assembly not loaded", false, group);
 
                 foreach (var duplicate in duplicates) {
 
@@ -48,7 +48,7 @@ namespace DuplicateAssemblyScanner {
                     }
                 }
             } else {
-                helper.AddGroup("No duplicates.");
+                AddGroup("No duplicates.", helper);
             }
         }
 
@@ -60,7 +60,7 @@ namespace DuplicateAssemblyScanner {
         /// <param name="assemblyName">The name of the assembly.</param>
         /// <param name="loaded">How many copies of the assembly are loaded.</param>
         /// <param name="list">The list of mods containing the assembly.</param>
-        internal static void RenderDetails(
+        private static void RenderDetails(
             UIHelperBase helper,
             string assemblyName,
             int loaded,
@@ -73,7 +73,7 @@ namespace DuplicateAssemblyScanner {
             log.Append("\n    Asm Version  MD5 Hash                         /Mod Folder   Mod name\n");
             log.Insert(log.Length, "-", 105);
 
-            UIHelperBase group = helper.AddGroup($"{assemblyName} ({loaded} loaded, {list.Count} mods):");
+            UIHelperBase group = AddGroup($"{assemblyName} ({loaded} loaded, {list.Count} mods):", helper);
 
             foreach (ModAssembly item in list) {
                 string v = item.AsmDetails.Version.ToString();
@@ -89,20 +89,20 @@ namespace DuplicateAssemblyScanner {
                     item.Folder.PadRight(12),
                     n);
 
-                Disable((UICheckBox)group.AddCheckbox($"{v} {e} {n}", item.AsmLoaded, (bool _) => { }));
+                AddCheckbox($"{v} {e} {n}", item.AsmLoaded, group);
             }
 
             Log.Info(log.ToString());
         }
 
-        /// <summary>
-        /// Disables a checkbox and sets its opacity based on state.
-        /// </summary>
-        /// 
-        /// <param name="box">The checkbox to disable.</param>
-        private static void Disable(UICheckBox box) {
+        private static UIHelperBase AddGroup(string caption, UIHelperBase parent) {
+            return parent.AddGroup(caption);
+        }
+
+        private static void AddCheckbox(string caption, bool enabled, UIHelperBase group) {
+            UICheckBox box = (UICheckBox)group.AddCheckbox(caption, enabled, (bool _) => { });
             box.readOnly = true;
-            box.opacity = box.isChecked ? 1f : 0.4f;
+            box.opacity = enabled ? 1f : 0.4f;
         }
 
         /// <summary>
@@ -117,15 +117,15 @@ namespace DuplicateAssemblyScanner {
             out Dictionary<string, int> duplicates,
             out Dictionary<string, List<ModAssembly>> occurrences) {
             
-            if (duplicates_ == null) {
-                duplicatesFound_ = Assemblies.Scan(out var dup, out var occ);
-                duplicates_ = dup;
-                occurrences_ = occ;
+            if (_duplicates == null) {
+                _duplicatesFound = Assemblies.Scan(out var dup, out var occ);
+                _duplicates = dup;
+                _occurrences = occ;
             }
 
-            duplicates = duplicates_;
-            occurrences = occurrences_;
-            return duplicatesFound_;
+            duplicates = _duplicates;
+            occurrences = _occurrences;
+            return _duplicatesFound;
         }
     }
 }
